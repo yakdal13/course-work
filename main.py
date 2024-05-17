@@ -14,15 +14,15 @@ class Board:
       return False
 
   def check_winner(self, symbol):
-      # Check rows
+      
       for row in range(3):
           if all(self.board[row][col] == symbol for col in range(3)):
               return True
-      # Check columns
+    
       for col in range(3):
           if all(self.board[row][col] == symbol for row in range(3)):
               return True
-      # Check diagonals
+    
       if all(self.board[i][i] == symbol for i in range(3)):
           return True
       if all(self.board[i][2 - i] == symbol for i in range(3)):
@@ -45,14 +45,14 @@ class HumanPlayer(Player):
     def get_move(self, board):
         while True:
             try:
-                # Ask user for their move
+                
                 row, col = map(int, input(f"Enter your move (row, col) for {self.symbol}: ").split())
 
-                # Convert the input from 1-based index to 0-based index
+                
                 row -= 1
                 col -= 1
 
-                # Make move if valid
+                
                 if board.make_move(row, col, self.symbol):
                     return
                 else:
@@ -70,18 +70,18 @@ class AIPlayer(Player):
         best_score = float('-inf')
         best_move = None
 
-        # Iterate through each cell on the board
+        
         for row in range(3):
             for col in range(3):
                 if board.board[row][col] == ' ':
-                    # Temporarily make a move
+                   
                     board.board[row][col] = self.symbol
-                    # Calculate the score of the move using Minimax
+                   
                     score = self.minimax(board, 0, False)
-                    # Undo the move
+                    
                     board.board[row][col] = ' '
 
-                    # Update the best score and move if this move is better
+                
                     if score > best_score:
                         best_score = score
                         best_move = (row, col)
@@ -89,15 +89,14 @@ class AIPlayer(Player):
         return best_move
 
     def minimax(self, board, depth, is_maximizing):
-        # Check if there's a winner
+        
         if board.check_winner(self.symbol):
-            return 1  # AI wins
+            return 1  
         if board.check_winner(self.opponent_symbol()):
-            return -1  # Opponent wins
+            return -1  
         if board.is_full():
-            return 0  # Draw
-
-        # Minimax algorithm
+            return 0  
+        
         if is_maximizing:
             best_score = float('-inf')
             for row in range(3):
@@ -131,7 +130,7 @@ class GameFactory:
 
 
 class Game:
-  _instance = None  # Singleton pattern
+  _instance = None  
 
   def __new__(cls, player1=None, player2=None):
       if cls._instance is None:
@@ -163,12 +162,12 @@ class Game:
 
 
 def main():
-  # Create players and game
+  
   player1 = HumanPlayer('X')
   player2 = AIPlayer('O')
   game = GameFactory.create_game(player1, player2)
 
-  # Play the game
+ 
   game.play_game()
 
 
